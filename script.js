@@ -18,20 +18,46 @@ window.addEventListener("load", function() {
       let coPilotNameInput = document.querySelector("input[name=copilotName");
       let fuelLevelInput = document.querySelector("input[name=fuelLevel");
       let cargoMassInput = document.querySelector("input[name=cargoMass");
+      let faultyItems = document.getElementById("faultyItems");
+      document.getElementById("pilotStatus").innerHTML = `Pilot ${pilotNameInput.value} is ready for launch.`;
+      document.getElementById("copilotStatus").innerHTML = `Co-Pilot ${coPilotNameInput.value} is ready for launch.`;
 
       if(pilotNameInput.value === "" || coPilotNameInput.value === "" || fuelLevelInput.value === "" || cargoMassInput.value === "") {
          alert("All fields are required.");
-         preventDefault();
+         event.preventDefault();
       }
 
-      if(!isNaN(pilotNameInput.value) || !isNaN(coPilotNameInput.value)) {
+      else if(!isNaN(pilotNameInput.value) || !isNaN(coPilotNameInput.value)) {
          alert("Pilot and CoPilot fields can't contain numbers.");
-         preventDefault();
+         event.preventDefault();
       }
 
-      if(isNaN(fuelLevelInput.value) || isNaN(cargoMassInput.value)) {
+      else if(isNaN(fuelLevelInput.value) || isNaN(cargoMassInput.value)) {
          alert("Fuel level and cargo mass must be numbers.");
-         preventDefault();
+         event.preventDefault();
+      }
+
+      else if(fuelLevelInput.value < 10000 && fuelLevelInput.value != "") {
+         faultyItems.style.visibility = "visible";
+         document.getElementById("fuelStatus").innerHTML = `Fuel level too low for launch.`;
+         document.getElementById("launchStatus").style.color = "red";
+         document.getElementById("launchStatus").innerHTML = `Shuttle not ready for launch`;
+         event.preventDefault();
+      }
+
+      else if(cargoMassInput.value > 10000) {
+         faultyItems.style.visibility = "visible";
+         document.getElementById("cargoStatus").innerHTML = `Cargo mass too high for launch.`;
+         document.getElementById("launchStatus").style.color = "red";
+         document.getElementById("launchStatus").innerHTML = `Shuttle not ready for launch`;
+         event.preventDefault();
+      }
+
+      else {
+         faultyItems.style.visibility = "visible";
+         document.getElementById("launchStatus").style.color = "green";
+         document.getElementById("launchStatus").innerHTML = `Shuttle is ready for launch`;
+         event.preventDefault();
       }
 
 
